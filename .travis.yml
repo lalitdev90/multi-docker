@@ -3,7 +3,7 @@ services:
  - docker
 
 before_isntall:
- - docker build -t lalitdev90/react-test -f ./client/Dcokerfile.dev ./client
+ - docker build -t lalitdev90/react-test -f ./client/Dockerfile.dev ./client
 
  
 script:
@@ -14,5 +14,11 @@ after_success:
  - docker build -t lalitdev90/multi-nginx -f ./nginx
  - docker build -t lalitdev90/multi-server -f ./server
  - docker build -t lalitdev90/multi-worker -f ./worker
+ # login to docker cli using "docker login"
+ - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
  # Take those images and push them to docker hub
+ - docker push lalitdev90/multi-client
+ - docker push lalitdev90/multi-nginx
+ - docker push lalitdev90/multi-server
+ - docker push lalitdev90/multi-worker
  

@@ -1,0 +1,18 @@
+sudo: required
+services:
+ - docker
+
+before_isntall:
+ - docker build -t lalitdev90/react-test -f ./client/Dcokerfile.dev ./client
+
+ 
+script:
+ - docker run -e CI=true lalitdev90/react-test npm test
+  
+after_success:
+ - docker build -t lalitdev90/multi-client -f ./client
+ - docker build -t lalitdev90/multi-nginx -f ./nginx
+ - docker build -t lalitdev90/multi-server -f ./server
+ - docker build -t lalitdev90/multi-worker -f ./worker
+ # Take those images and push them to docker hub
+ 
